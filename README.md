@@ -5,15 +5,12 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
 
  <b>Screenshots:</b><br/>
 
-<ul style="overflow-x:auto;white-space:nowrap;width:900px;">
-  <!-- Inline styles added for demonstration purposes only. -->
-  <li style="display:inline"><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%203%2021072020.png" /></li>
-  <li style="display:inline"><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%202%2021072020.png" /></li>
-  <li style="display:inline"><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2021072020.png" /></li>
-  <li style="display:inline"><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" /></li>
-  <li style="display:inline"><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" /></li>
-  <li style="display:inline"><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" /></li>
-</ul>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%203%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%202%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" /><br/>
 
 <br/>
  <b>Features:</b><br/>
