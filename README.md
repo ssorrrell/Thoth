@@ -16,6 +16,7 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
 <IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" />
 
 <IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" />
+<br/>
  Features:<br/>
  Download audio files on background thread<br/>
  Read RSS feeds<br/>
