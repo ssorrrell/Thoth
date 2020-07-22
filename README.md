@@ -31,7 +31,7 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
  <br/>
  <b>Target</b>:<br/>
  The Android side is developed against a Pixel 2 Pie and Nokia 5x Pie emulator.<br/>
- 
+ <br/>
  <b>To Do Tasks:</b><br/>
  Background download thread for UWP<br/>
  Unit Tests<br/>
