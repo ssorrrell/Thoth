@@ -11,7 +11,7 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
 
 <IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2021072020.png" />
 
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2021072020.png" />
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" />
 
 <IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" />
 
@@ -28,7 +28,7 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
  Keep track of play position thru play/pause actions<br/>
  Download and delete specific episodes<br/>
  Add feed from url<br/>
- 
+ <br/>
  <b>Target</b>:<br/>
  The Android side is developed against a Pixel 2 Pie and Nokia 5x Pie emulator.<br/>
  
