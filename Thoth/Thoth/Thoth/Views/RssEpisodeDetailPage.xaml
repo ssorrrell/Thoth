@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vc="clr-namespace:Thoth.Views.ValueConverters"
+             mc:Ignorable="d"
+             x:Class="Thoth.Views.RssEpisodeDetailPage"
+             Title="{Binding Title}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="DownloadEpisode_Clicked" IconImageSource="{Binding DownloadIcon}" IsEnabled="{Binding DownloadButtonEnabled}"/>
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <vc:PodcastEpisodeImageConverter x:Key="podcastEpisodeImageConverter" />
+            <vc:IsDownloadedBoolConverter x:Key="isDownloadedBoolConverter" />
+            <vc:InverseBoolConverter x:Key="inverseBoolConverter" />
+            <vc:StringIsEmptyToBoolConverter x:Key="stringIsEmptyToBoolConverter" />
+        </ResourceDictionary>
+        <x:String x:Key="Rewind">&#xe020;</x:String>
+        <x:String x:Key="Play">&#xe037;</x:String>
+        <x:String x:Key="FastForward">&#xe01f;</x:String>
+        <OnPlatform x:Key="MaterialFontFamily" x:TypeArguments="x:String">
+            <On Platform="Android" Value="MaterialIcons-Regular.ttf#Material Design Icons" />
+        </OnPlatform>
+    </ContentPage.Resources>
+
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollView Grid.Row="0">
+            <StackLayout>
+                <StackLayout IsVisible="{Binding IsBusy}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" 
+                                       Color="LightSkyBlue" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
+                    <StackLayout Spacing="20" Padding="15" BackgroundColor="WhiteSmoke">
+                        <StackLayout IsVisible="{Binding EpisodeItem.ImageLink, Converter={StaticResource stringIsEmptyToBoolConverter}}">
+                            <Image Source="{Binding EpisodeItem.ImageLink, Converter={StaticResource podcastEpisodeImageConverter}}" 
+                                   x:Name="CoverArt" HeightRequest="180"/>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnCovertArtClicked"></TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <Label Text="{Binding EpisodeItem.Title}" d:Text="EpisodeItem title" FontSize="Medium"/>
+                        <Label Text="{Binding EpisodeItem.Description}" d:Text="EpisodeItem description" TextType="Html" FontSize="Small"/>
+                        <Label Text="{Binding EpisodeItem.PubDate}" d:Text="EpisodeItem pubdate" FontSize="Small"/>
+                        <FlexLayout Direction="Row" AlignItems="Center" JustifyContent="Start">
+                            <Label Text="Downloaded" FontSize="Small" FontAttributes="None" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding EpisodeItem.IsDownloaded, Converter={StaticResource isDownloadedBoolConverter}}" 
+                                      HorizontalOptions="Center" Color="SkyBlue" IsEnabled="false" />
+                        </FlexLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+        <ScrollView Grid.Row="1">
+            <StackLayout Orientation="Vertical" Spacing="5" Margin="10" Padding="0" BackgroundColor="WhiteSmoke">
+                <Slider x:Name="sliderPosition" ThumbColor="SkyBlue" MinimumTrackColor="LightBlue" MaximumTrackColor="LightSkyBlue" 
+                        Value="{Binding SliderPosition}" Maximum="{Binding SliderMaximum}" DragCompleted="Drag_Completed"/>
+                <Label x:Name="lblPosition" Text="{Binding PositionText}" />
+                <Grid
+                  VerticalOptions="End"
+                  BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" BackgroundColor="LightGray"
+                    Text="{StaticResource Rewind}" Clicked="Rewind_Clicked"
+                    FontFamily="{StaticResource MaterialFontFamily}"
+                    TextColor="White" FontSize="44" x:Name="btnRewind"
+                    />
+
+                    <Button Grid.Column="1" BackgroundColor="LightGray"
+                    Text="{Binding PlayPauseIcon}" Clicked="Play_Clicked"
+                    FontFamily="{StaticResource MaterialFontFamily}"
+                    TextColor="White" FontSize="50" x:Name="btnPlay"
+                    />
+
+                    <Button Grid.Column="2" BackgroundColor="LightGray"
+                    Text="{StaticResource FastForward}" Clicked="FastForward_Clicked"
+                    FontFamily="{StaticResource MaterialFontFamily}"
+                    TextColor="White" FontSize="44" x:Name="btnFastForward"
+                    />
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+    
+
+
+
+</ContentPage>

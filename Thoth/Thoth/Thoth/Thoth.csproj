@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\TodoItemDatabase.cs" />
+    <Compile Remove="ViewModels\FeedItemDetailViewModel.cs" />
+    <Compile Remove="Views\FeedItemDetailPage.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\FeedItemDetailPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.446" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.24" />
+    <PackageReference Include="Microsoft.Toolkit.Parsers" Version="6.1.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
+    <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.4.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1080" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\RssEpisodeDetailPage.xaml.cs">
+      <DependentUpon>RssEpisodeDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SeedPage.xaml.cs">
+      <DependentUpon>SeedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\FeedItemListPage.xaml.cs">
+      <DependentUpon>FeedItemListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RssEpisodeListPage.xaml.cs">
+      <DependentUpon>RssEpisodeListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NewFeedItemPage.xaml.cs">
+      <DependentUpon>NewFeedItemPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\CoverArtPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RssEpisodeListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Commands\" />
+  </ItemGroup>
+</Project>

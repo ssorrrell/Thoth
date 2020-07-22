@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Thoth.Views.FeedItemDetailPage"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="DeleteItem_Clicked" IconImageSource="{Binding DeleteIcon}"/>
+    </ContentPage.ToolbarItems>
+    
+    <StackLayout Spacing="20" Padding="15">
+        <Label Text="ID:" FontSize="Medium" IsVisible="true"/>
+        <Label Text="{Binding FeedItem.Id}" d:Text="FeedItem id" FontSize="Small" IsVisible="true" />
+        <Label Text="Text:" FontSize="Medium" />
+        <Label Text="{Binding FeedItem.Text}" d:Text="FeedItem name" FontSize="Small"/>
+        <Label Text="Description:" FontSize="Medium" />
+        <Label Text="{Binding FeedItem.Description}" d:Text="FeedItem description" FontSize="Small"/>
+        <Label Text="Link:" FontSize="Medium" />
+        <Label Text="{Binding FeedItem.Link}" d:Text="FeedItem link" FontSize="Small"/>
+    </StackLayout>
+    
+</ContentPage>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vc="clr-namespace:Thoth.Views.ValueConverters"
+             mc:Ignorable="d"
+             x:Class="Thoth.Views.NewFeedItemPage"
+             Title="New Podcast Feed">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <vc:InverseBoolConverter x:Key="inverseBoolConverter" />
+        </ResourceDictionary>
+        <OnPlatform x:Key="MaterialFontFamily" x:TypeArguments="x:String">
+            <On Platform="Android" Value="MaterialIcons-Regular.ttf#Material Design Icons" />
+        </OnPlatform>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="Cancel_Clicked" IconImageSource="{Binding CancelIcon}" />
+        <ToolbarItem Clicked="Save_Clicked" IconImageSource="{Binding SaveIcon}" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" 
+                                       Color="LightSkyBlue" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}"
+                          Spacing="20" Padding="15">
+                <Label Text="Link" FontSize="Large" />
+                <Entry Text="{Binding Link}" Keyboard="Url" d:Text="FeedItem link" FontSize="Medium" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+ 
+</ContentPage>

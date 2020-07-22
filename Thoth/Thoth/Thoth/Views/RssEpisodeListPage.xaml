@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vc="clr-namespace:Thoth.Views.ValueConverters"
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="Thoth.Views.RssEpisodeListPage">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <vc:PodcastEpisodeImageConverter x:Key="podcastEpisodeImageConverter" />
+            <vc:InverseBoolConverter x:Key="inverseBoolConverter" />
+            <vc:StringIsEmptyToBoolConverter x:Key="stringIsEmptyToBoolConverter" />
+        </ResourceDictionary>
+        <x:String x:Key="Play">&#xe037;</x:String>
+        <OnPlatform x:Key="MaterialFontFamily" x:TypeArguments="x:String">
+            <On Platform="Android" Value="MaterialIcons-Regular.ttf#Material Design Icons" />
+        </OnPlatform>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="DeleteItem_Clicked" IconImageSource="{Binding DeleteIcon}"/>
+        <ToolbarItem Command="{Binding RefreshCommand}" IconImageSource="{Binding RefreshIcon}"/>
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}" Command="{Binding LoadItemsCommand}">
+        <StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" 
+                                   Color="LightSkyBlue" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
+                <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding Items}">
+                    <d:CollectionView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                        </x:Array>
+                    </d:CollectionView.ItemsSource>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                                    <Image Source="{Binding ImageLink, Converter={StaticResource podcastEpisodeImageConverter}}" HeightRequest="60"
+                                           IsVisible="{Binding ImageLink, Converter={StaticResource stringIsEmptyToBoolConverter}}"/>
+                                    <StackLayout>
+                                        <Label Text="{Binding Title}" 
+                                        d:Text="{Binding .}"
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="16" />
+                                        <Label Text="{Binding Description}" 
+                                        d:Text="{Binding .}"
+                                        LineBreakMode="NoWrap"
+                                        Style="{DynamicResource ListItemDetailTextStyle}"
+                                        TextType="Html"
+                                        FontSize="13" />
+                                    </StackLayout>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemSelected"></TapGestureRecognizer>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                                <Button HorizontalOptions="End"
+                                    Text="{Binding PlayPauseDownloadIcon}"
+                                    FontFamily="{StaticResource MaterialFontFamily}"
+                                    TextColor="White" FontSize="44" x:Name="btnPlay"
+                                    Clicked="Play_Clicked"
+                                    />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </RefreshView>
+</ContentPage>
