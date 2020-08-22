@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 using Thoth.Models;
 using Thoth.Messages;
-using Thoth.Services;
 
 using Xamarin.Forms;
 using System.Diagnostics;

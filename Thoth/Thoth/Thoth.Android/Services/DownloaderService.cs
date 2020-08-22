@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 
 using Xamarin.Forms;
+
 using Thoth.Messages;
 
 namespace Thoth.Droid.Services
 {
-	[Service]
+    [Service]
 	public class DownloaderService : Service
 	{
 		public override IBinder OnBind(Intent intent)
@@ -33,12 +27,12 @@ namespace Thoth.Droid.Services
 			Task.Run(() => {
 				var imageHelper = new DownloadHelper();
 				imageHelper.DownloadFileAsync(url, filePath)
-						.ContinueWith(filePath => {
+						.ContinueWith(fp => {
 							var message = new DownloadFinishedMessage
 							{
 								Id = id,
 								Url = url,
-								FilePath = filePath.Result
+								FilePath = fp.Result
 							};
 							MessagingCenter.Send(message, "DownloadFinishedMessage");
 						});

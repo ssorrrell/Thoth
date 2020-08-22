@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-
-namespace Thoth.Models
+﻿namespace Thoth.Models
 {
     public class FileInfo
     {

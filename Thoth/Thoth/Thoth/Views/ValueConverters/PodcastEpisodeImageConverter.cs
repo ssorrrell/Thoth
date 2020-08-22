@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Text;
-using Thoth.Services;
+
 using Xamarin.Forms;
+
+using Thoth.Services;
 
 namespace Thoth.Views.ValueConverters
 {

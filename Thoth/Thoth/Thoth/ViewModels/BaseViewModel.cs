@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
 
-using Thoth.Models;
 using Thoth.Services;
 
 namespace Thoth.ViewModels

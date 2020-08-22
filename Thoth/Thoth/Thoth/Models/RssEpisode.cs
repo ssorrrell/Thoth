@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using SQLite;
-using Microsoft.Toolkit.Parsers.Rss;
-using System.Linq;
 
 namespace Thoth.Models
 {

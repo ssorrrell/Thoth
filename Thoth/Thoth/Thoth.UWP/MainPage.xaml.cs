@@ -21,7 +21,7 @@ namespace Thoth.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new Thoth.App());
+            //LoadApplication(new Thoth.App());
         }
     }
 }

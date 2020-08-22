@@ -221,39 +221,5 @@ namespace Thoth.Services
             }
             return 0;
         }
-
-        /*public async Task<bool> AddItemAsync(FeedItem item)
-        {
-            items.Add(item);
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<bool> UpdateItemAsync(FeedItem item)
-        {
-            var oldItem = items.Where((FeedItem arg) => arg.Id == item.Id).FirstOrDefault();
-            items.Remove(oldItem);
-            items.Add(item);
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<bool> DeleteItemAsync(int id)
-        {
-            var oldItem = items.Where((FeedItem arg) => arg.Id == id).FirstOrDefault();
-            items.Remove(oldItem);
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<FeedItem> GetItemAsync(int id)
-        {
-            return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));
-        }
-
-        public async Task<IEnumerable<FeedItem>> GetItemsAsync(bool forceRefresh = false)
-        {
-            return await Task.FromResult(items);
-        }*/
     }
 }

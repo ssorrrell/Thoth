@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Thoth.Models
+﻿namespace Thoth.Models
 {
     public enum MenuItemType
     {

@@ -89,44 +89,7 @@ namespace Thoth.Views
                     await ViewModel.ExecutePlayCommandAsync(episode);
                 }
             }
-
-            /*if (episode.IsDownloaded == IsDownloadedEnum.Downloaded && !string.IsNullOrEmpty(episode.EnclosureLink)
-                && !PodcastPlayer.Instance.IsPlaying)
-            {   //might need to reload the Episode here if a downlooad completed 
-                //or another podcast was playing when the page loaded
-                PodcastPlayer.Instance.Episode = episode;
-            }
-
-            if (!PodcastPlayer.Instance.IsPlaying)
-            {
-                ViewModel.PlayPauseIcon = IconFont.PlayArrow;
-                PlayPauseState = false;
-                PodcastPlayer.Instance.PlayPause();
-                sliderPosition.Maximum = PodcastPlayer.Instance.Duration;
-                sliderPosition.IsEnabled = PodcastPlayer.Instance.CanSeek;
-            }
-            else
-            {
-                ViewModel.PlayPauseIcon = IconFont.Pause;
-                PlayPauseState = true;
-                PodcastPlayer.Instance.PlayPause();
-                sliderPosition.Maximum = PodcastPlayer.Instance.Duration;
-                sliderPosition.IsEnabled = PodcastPlayer.Instance.CanSeek;
-                Device.StartTimer(TimeSpan.FromSeconds(0.7), UpdatePosition);
-            }*/
         }
-
-        /*private bool UpdatePosition()
-        {
-            int pos = (int)PodcastPlayer.Instance.CurrentPosition;
-            lblPosition.Text = $"Position: {pos} / {PodcastPlayer.Instance.Duration}";
-
-            sliderPosition.ValueChanged -= SliderPositionValueChanged;
-            sliderPosition.Value = pos;
-            sliderPosition.ValueChanged += SliderPositionValueChanged;
-
-            return PodcastPlayer.Instance.IsPlaying;
-        }*/
 
         async void OnItemSelected(object sender, EventArgs args)
         {

@@ -1,17 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
-using Android.Graphics;
 using Android.Util;
-using System.Net;
-using System.ComponentModel;
-using Android.Webkit;
 using Java.IO;
 using Java.Net;
 
 namespace Thoth.Droid.Services
 {
-	public class DownloadHelper
+    public class DownloadHelper
 	{
 		private bool NeedsDownload (string filePath)
 		{
@@ -77,27 +72,6 @@ namespace Thoth.Droid.Services
 				Log.WriteLine(LogPriority.Error, "DownloadFile Error", ex.Message);
 			}
 			return filePath;
-
-			/*try {
-			    using (var stream = new MemoryStream ()) {
-					using (var imageUrl = new Java.Net.URL (url)) {
-						var options = new BitmapFactory.Options {
-							InSampleSize = 1,
-							InPurgeable = true
-						};
-
-						var bit = BitmapFactory.DecodeStream (imageUrl.OpenStream (), null, options);
-						bit.Compress (Bitmap.CompressFormat.Png, 70, stream);
-					}
-					var imageBytes = stream.ToArray ();
-
-					File.WriteAllBytes (this.Path, imageBytes);
-				}
-			} catch (Exception ex) {
-				Log.WriteLine (LogPriority.Error, "GetImageFromBitmap Error", ex.Message);
-			}
-
-			return this.Path;*/
 		}
 	}
 }

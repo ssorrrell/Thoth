@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Windows.Input;
-using Xamarin.Essentials;
 using Xamarin.Forms;
-
-using Thoth.Models;
-using Thoth.Views;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
-using Thoth.Services;
 using System.Collections.ObjectModel;
+
+using Thoth.Views;
+using Thoth.Services;
 
 namespace Thoth.ViewModels
 {
