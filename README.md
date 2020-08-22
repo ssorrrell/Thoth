@@ -5,17 +5,13 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
 
  <b>Screenshots:</b><br/>
 
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%203%2021072020.png" />
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%203%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%202%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" /><br/>
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" /><br/>
 
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%202%2021072020.png" />
-
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2021072020.png" />
-
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" />
-
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" />
-
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" />
 <br/>
  <b>Features:</b><br/>
  Download audio files on background thread<br/>
