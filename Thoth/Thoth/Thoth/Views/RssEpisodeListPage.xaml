@@ -13,6 +13,10 @@
             <vc:PodcastEpisodeImageConverter x:Key="podcastEpisodeImageConverter" />
             <vc:InverseBoolConverter x:Key="inverseBoolConverter" />
             <vc:StringIsEmptyToBoolConverter x:Key="stringIsEmptyToBoolConverter" />
+            <vc:ImageBorderColorConverter x:Key="ImageBorderColorConverter" />
+            <Style x:Key="BorderStyle" TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="{Binding IsPlaying, Converter={StaticResource ImageBorderColorConverter}}"/>
+            </Style>
         </ResourceDictionary>
         <x:String x:Key="Play">&#xe037;</x:String>
         <OnPlatform x:Key="MaterialFontFamily" x:TypeArguments="x:String">
@@ -32,44 +36,62 @@
                                    Color="LightSkyBlue" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
             </StackLayout>
             <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
-                <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding Items}">
-                    <d:CollectionView.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                        </x:Array>
-                    </d:CollectionView.ItemsSource>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout Orientation="Horizontal" Padding="10">
-                                <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
-                                    <Image Source="{Binding ImageLink, Converter={StaticResource podcastEpisodeImageConverter}}" HeightRequest="60"
-                                           IsVisible="{Binding ImageLink, Converter={StaticResource stringIsEmptyToBoolConverter}}"/>
-                                    <StackLayout>
-                                        <Label Text="{Binding Title}" 
-                                        d:Text="{Binding .}"
-                                        LineBreakMode="NoWrap" 
-                                        Style="{DynamicResource ListItemTextStyle}" 
-                                        FontSize="16" />
-                                        <Label Text="{Binding Description}" 
-                                        d:Text="{Binding .}"
-                                        LineBreakMode="NoWrap"
-                                        Style="{DynamicResource ListItemDetailTextStyle}"
-                                        TextType="Html"
-                                        FontSize="13" />
-                                    </StackLayout>
-                                    <StackLayout.GestureRecognizers>
-                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemSelected"></TapGestureRecognizer>
-                                    </StackLayout.GestureRecognizers>
-                                </StackLayout>
-                                <Button HorizontalOptions="End"
-                                    Text="{Binding PlayPauseDownloadIcon}"
-                                    FontFamily="{StaticResource MaterialFontFamily}"
-                                    TextColor="White" FontSize="44" x:Name="btnPlay"
-                                    Clicked="Play_Clicked"
-                                    />
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <StackLayout>
+                    <StackLayout Orientation="Vertical" BackgroundColor="LightSkyBlue">
+                        <StackLayout Orientation="Horizontal" Padding="6,0,0,0">
+                            <Label Text="Last Check" FontSize="Medium"></Label>
+                            <Label Text="{Binding FeedItem.LastCheck, StringFormat='{0:MMMM dd, yyyy} {0:hh\\:mm}'}" FontSize="Medium"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Padding="6,0,0,0">
+                            <Label Text="{Binding Items.Count}" FontSize="Medium"></Label>
+                            <Label Text="Episodes" FontSize="Medium"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding Items}">
+                        <d:CollectionView.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                            </x:Array>
+                        </d:CollectionView.ItemsSource>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+
+                                        <StackLayout Orientation="Horizontal" Padding="10">
+                                            <StackLayout Orientation="Horizontal" HorizontalOptions="Start">
+                                        <ContentView VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                                            <ContentView Style="{StaticResource BorderStyle}">
+                                                <Image Source="{Binding ImageLink, Converter={StaticResource podcastEpisodeImageConverter}}" HeightRequest="80"
+                                                        IsVisible="{Binding ImageLink, Converter={StaticResource stringIsEmptyToBoolConverter}}"/>
+                                            </ContentView>
+                                        </ContentView>
+                                        <StackLayout>
+                                                    <Label Text="{Binding Title}" 
+                                                        d:Text="{Binding .}"
+                                                        LineBreakMode="NoWrap" 
+                                                        Style="{DynamicResource ListItemTextStyle}" 
+                                                        FontSize="16" />
+                                                    <Label Text="{Binding Description}" 
+                                                        d:Text="{Binding .}"
+                                                        LineBreakMode="NoWrap"
+                                                        Style="{DynamicResource ListItemDetailTextStyle}"
+                                                        TextType="Html"
+                                                        FontSize="13" />
+                                                </StackLayout>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemSelected"></TapGestureRecognizer>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <Button HorizontalOptions="End"
+                                                Text="{Binding PlayPauseDownloadIcon}"
+                                                FontFamily="{StaticResource MaterialFontFamily}"
+                                                TextColor="White" FontSize="50" x:Name="btnPlay"
+                                                Clicked="Play_Clicked"
+                                                />
+                                        </StackLayout>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
             </StackLayout>
         </StackLayout>
     </RefreshView>

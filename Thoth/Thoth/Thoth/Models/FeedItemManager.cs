@@ -36,6 +36,7 @@ namespace Thoth.Models
                     feedItem.Link = uri;
                     feedItem.ImageLink = imageLink;
                     feedItem.ImageFileName = imageFileName;
+                    feedItem.LastCheck = DateTime.Now; //save LastCheck
                 }
             }
             return feedItem;
