@@ -1,0 +1,27 @@
+{
+  "NETStandard.Library": {
+    "imports": ["NETStandard.Library"],
+    "technologies": [".Net Standard Library"],
+    "description": "",
+    "language": "c#"
+  },
+  "SimpleAudioPlayer": {
+    "imports": ["Xam.Plugin.SimpleAudioPlayer"],
+    "technologies": ["Simple Audio Player"],
+    "description": "",
+    "language": "c#"
+  },
+  "XamarinEssentials": {
+    "imports": ["Xamarin.Essentials"],
+    "technologies": ["Xamarin Essentials"],
+    "description": "",
+    "language": "c#"
+  },
+    "XamarinForms": {
+    "imports": ["Xamarin.Forms"],
+    "technologies": ["Xamarin Forms"],
+    "description": "",
+    "language": "c#"
+  },
+  
+}
