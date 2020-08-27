@@ -89,7 +89,7 @@ namespace Thoth.Models
 
         public static void SetEpisodeToFinished(ref RssEpisode episode)
         {
-            episode.PlayPauseDownloadIcon = IconFont.PlayArrow;
+            episode.PlayPauseDownloadIcon = IconFont.Checked;
             episode.IsPlaying = IsPlayingEnum.Finished;
         }
 

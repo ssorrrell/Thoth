@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Thoth.Models;
 using Thoth.Services;
 using Thoth.Messages;
+using System.Linq;
 
 namespace Thoth.ViewModels
 {
@@ -32,6 +33,13 @@ namespace Thoth.ViewModels
         {
             get { return _refreshIcon; }
             set { SetProperty(ref _refreshIcon, value); }
+        }
+
+        bool _showEpisodeImages = true;
+        public bool ShowEpisodeImages
+        {
+            get { return _showEpisodeImages; }
+            set { SetProperty(ref _showEpisodeImages, value); }
         }
 
         FeedItemManager _feedItemManager = null;
@@ -92,12 +100,16 @@ namespace Thoth.ViewModels
             try
             {
                 Items.Clear();
+                ShowEpisodeImages = false;
                 if (FeedItem != null && FeedItem.Id != null)
                 {
                     var count = 0;
                     var items = await DataStore.GetAllEpisodeItemsByFeedIdAsync(FeedItem.Id.Value);
+                    var oldImageFileName = items.First<RssEpisode>().ImageFileName;
                     foreach (var item in items)
                     {
+                        if (!ShowEpisodeImages && item.ImageFileName != oldImageFileName)
+                            ShowEpisodeImages = true;
                         Items.Add(item);
                         count++;
                         //if (count >= 20)

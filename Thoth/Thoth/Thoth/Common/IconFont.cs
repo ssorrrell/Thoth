@@ -18,5 +18,6 @@ namespace Thoth.Services
 		public const string SkipNext = "\ue044";
 		public const string Delete = "\ue872";
 		public const string Home = "\ue88a";
+		public const string Checked = "\ue5ca";
 	}
 }
