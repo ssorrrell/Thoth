@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Diagnostics;
 using System.Net;
 
-namespace Thoth.Services
+namespace Thoth.Helpers
 {
     public class RssFeedHelper
     {

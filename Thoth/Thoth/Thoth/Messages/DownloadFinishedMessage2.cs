@@ -5,7 +5,7 @@ using Thoth.Models;
 
 namespace Thoth.Messages
 {
-    public class DownloadFinishedMessage2
+    public class UpdateEpisodeMessage
     {
         public RssEpisode RssEpisode;
     }

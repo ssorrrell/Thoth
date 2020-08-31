@@ -7,9 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Thoth.Services;
+using Thoth.Helpers;
+using Thoth.Messages;
+using Thoth.Common;
 
 using Xamarin.Forms;
-using Thoth.Messages;
 
 namespace Thoth.Models
 {
@@ -189,7 +191,7 @@ namespace Thoth.Models
                         //update icon on item - updates screen
                         SetEpisodeToPlaying(ref episode);
                         //broadcast to other viewmodels
-                        var startMessage = new DownloadFinishedMessage2 { RssEpisode = episode };
+                        var startMessage = new UpdateEpisodeMessage { RssEpisode = episode };
                         MessagingCenter.Send(startMessage, "StartEpisodePlaying");
                         //save episode - updates db
                         var result = await DataStore.SaveEpisodeItemAsync(episode);
@@ -231,7 +233,7 @@ namespace Thoth.Models
                     //update icon on item - updates screen
                     SetEpisodeToPause(ref episode);
                     //broadcast to other viewmodels
-                    var pauseMessage = new DownloadFinishedMessage2 { RssEpisode = episode };
+                    var pauseMessage = new UpdateEpisodeMessage { RssEpisode = episode };
                     MessagingCenter.Send(pauseMessage, "StopEpisodePlaying");
                     //update current position
                     episode.CurrentPosition = PodcastPlayer.Instance.CurrentPosition;

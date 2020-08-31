@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 using Thoth.Models;
-using Thoth.Services;
+using Thoth.Helpers;
+using Thoth.Common;
 
 namespace Thoth.ViewModels
 {

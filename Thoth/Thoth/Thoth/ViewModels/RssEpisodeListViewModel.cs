@@ -2,13 +2,15 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Linq;
 
 using Xamarin.Forms;
 
 using Thoth.Models;
 using Thoth.Services;
 using Thoth.Messages;
-using System.Linq;
+using Thoth.Common;
+
 
 namespace Thoth.ViewModels
 {
@@ -70,9 +72,9 @@ namespace Thoth.ViewModels
             RefreshCommand = new Command(async () => await ExecuteRefreshCommand());
             DeleteCommand = new Command(async () => await ExecuteDeleteCommand());
 
-            MessagingCenter.Subscribe<DownloadFinishedMessage2>(this, "DownloadFinishedMessage2", message => {
+            MessagingCenter.Subscribe<UpdateEpisodeMessage>(this, "UpdateEpisodeMessage", message => {
                 Device.BeginInvokeOnMainThread(() =>
-                {   //receive the result from DownloadManager
+                {   //receive the result from DownloadService
                     //check that this ViewModel is the correct one for the downloaded podcast
                     if (message.RssEpisode.FeedItemId == FeedItem.Id)
                     {   //check the Feed Id first
@@ -80,9 +82,9 @@ namespace Thoth.ViewModels
                     }
                 });
             });
-            MessagingCenter.Subscribe<DownloadFinishedMessage2>(this, "PlaybackEnded", message => {
+            MessagingCenter.Subscribe<UpdateEpisodeMessage>(this, "PlaybackEnded", message => {
                 Device.BeginInvokeOnMainThread(async () =>
-                {   //receive the result from DownloadManager
+                {   //receive the result from DownloadService
                     if (message.RssEpisode.FeedItemId == FeedItem.Id)
                     {   //check that this ViewModel is the correct one for the downloaded podcast
                         await RssEpisodeManager.FinishedEpisodeAsync(message.RssEpisode);
@@ -152,10 +154,9 @@ namespace Thoth.ViewModels
             {
                 if (episode != null && episode.Id != null)
                 {
-                    if (DownloadManager.CanDownload(episode))
+                    if (DownloadService.CanDownloadPodcast(episode))
                     {
-                        //DownloadButtonEnabled = false;
-                        DownloadManager.Instance.Download(episode); //fires message center messages
+                        DownloadService.Instance.DownloadPodcast(episode); //fires message center messages
                     }
                     else
                     {

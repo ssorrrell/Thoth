@@ -1,3 +1,5 @@
+using Thoth.Models;
+
 namespace Thoth.Messages
 {
 	public class DownloadMessage
@@ -5,5 +7,6 @@ namespace Thoth.Messages
 		public int Id { get; set; }
 		public string Url { get; set; }
 		public string FilePath { get; set; }
+		public QueueType QueueType { get; set; }
 	}
 }

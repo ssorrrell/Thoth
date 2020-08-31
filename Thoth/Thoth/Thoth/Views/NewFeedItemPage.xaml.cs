@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Xamarin.Forms;
 
 using Thoth.ViewModels;
-using Thoth.Services;
+using Thoth.Common;
 
 namespace Thoth.Views
 {

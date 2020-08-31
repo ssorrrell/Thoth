@@ -4,8 +4,12 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Plugin.SimpleAudioPlayer;
+
 using Thoth.Messages;
 using Thoth.Models;
+using Thoth.Common;
+using Thoth.Helpers;
+
 using Xamarin.Forms;
 
 namespace Thoth.Services
@@ -196,7 +200,7 @@ namespace Thoth.Services
         {
             Stop();
             PlaybackEnded?.Invoke(sender, e);
-            var startMessage = new DownloadFinishedMessage2 { RssEpisode = Episode };
+            var startMessage = new UpdateEpisodeMessage { RssEpisode = Episode };
             MessagingCenter.Send(startMessage, "PlaybackEnded");
         }
 

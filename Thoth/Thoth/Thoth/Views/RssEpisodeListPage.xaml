@@ -41,7 +41,7 @@
             </StackLayout>
             <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
                 <StackLayout>
-                    <StackLayout Orientation="Vertical" BackgroundColor="LightSkyBlue">
+                    <StackLayout Orientation="Vertical" BackgroundColor="LightSkyBlue" IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
                         <StackLayout Orientation="Horizontal" Padding="6,0,0,0">
                             <Label Text="Last Check" FontSize="Medium"></Label>
                             <Label Text="{Binding FeedItem.LastCheck, StringFormat='{0:MMMM dd, yyyy} {0:hh\\:mm}'}" FontSize="Medium"></Label>

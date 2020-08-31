@@ -6,7 +6,8 @@ using System.IO;
 using System.Collections.ObjectModel;
 
 using Thoth.Views;
-using Thoth.Services;
+using Thoth.Helpers;
+using Thoth.Common;
 
 namespace Thoth.ViewModels
 {

@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 using Thoth.Models;
 using Thoth.ViewModels;
-using Thoth.Services;
+using Thoth.Common;
 
 [assembly: ExportFont("MaterialsIcon-Regular.ttf", Alias = "Material Design Icons")]
 namespace Thoth.Views

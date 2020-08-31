@@ -56,6 +56,7 @@ namespace Thoth.Droid
                 intent.PutExtra("id", message.Id);
                 intent.PutExtra("url", message.Url);
                 intent.PutExtra("filePath", message.FilePath);
+                intent.PutExtra("queueType", (int)message.QueueType);
                 StartService(intent);
             });
         }

@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System.Threading;
+using System.Transactions;
+using System.Windows.Input;
+using System.Xml;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -15,3 +18,4 @@ namespace Thoth.ViewModels
         public ICommand OpenWebCommand { get; }
     }
 }
+

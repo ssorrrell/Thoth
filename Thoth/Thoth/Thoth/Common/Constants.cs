@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Thoth.Services
+namespace Thoth.Common
 {
     public static class Constants
     {

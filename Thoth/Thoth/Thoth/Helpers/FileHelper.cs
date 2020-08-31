@@ -4,7 +4,9 @@ using System.IO;
 using System.Net.Http;
 using System.Diagnostics;
 
-namespace Thoth.Services
+using Thoth.Common;
+
+namespace Thoth.Helpers
 {
     public class FileHelper
     {

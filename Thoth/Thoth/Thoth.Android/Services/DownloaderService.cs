@@ -7,6 +7,7 @@ using Android.OS;
 using Xamarin.Forms;
 
 using Thoth.Messages;
+using Thoth.Models;
 
 namespace Thoth.Droid.Services
 {
@@ -23,6 +24,9 @@ namespace Thoth.Droid.Services
 			var id = intent.GetIntExtra("id", 0);
 			var url = intent.GetStringExtra("url");
 			var filePath = intent.GetStringExtra("filePath");
+			var iQueueType = intent.GetIntExtra("queueType", 0);
+
+			QueueType queueType = ConvertIntToQueueType(iQueueType);
 
 			Task.Run(() => {
 				var imageHelper = new DownloadHelper();
@@ -32,13 +36,32 @@ namespace Thoth.Droid.Services
 							{
 								Id = id,
 								Url = url,
-								FilePath = fp.Result
+								FilePath = fp.Result,
+								QueueType = queueType
 							};
 							MessagingCenter.Send(message, "DownloadFinishedMessage");
 						});
 			});
 
 			return StartCommandResult.Sticky;
+		}
+
+		private QueueType ConvertIntToQueueType(int i)
+        {
+			QueueType queueType;
+			switch (i)
+			{
+				default:
+					queueType = QueueType.PodcastFile;
+					break;
+				case 1:
+					queueType = QueueType.ImageFile;
+					break;
+				case 2:
+					queueType = QueueType.RssFeed;
+					break;
+			}
+			return queueType;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Thoth.Services
+namespace Thoth.Common
 {
 	static class IconFont
 	{

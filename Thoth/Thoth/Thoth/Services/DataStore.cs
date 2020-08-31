@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Thoth.Models;
+
 using SQLite;
+
+using Thoth.Models;
+using Thoth.Helpers;
+using Thoth.Common;
 
 namespace Thoth.Services
 {

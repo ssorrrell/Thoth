@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Thoth.Models;
 using Thoth.Services;
 using Thoth.Messages;
+using Thoth.Common;
 
 namespace Thoth.ViewModels
 {
@@ -118,9 +119,9 @@ namespace Thoth.ViewModels
                 }
             }
 
-            MessagingCenter.Subscribe<DownloadFinishedMessage2>(this, "DownloadFinishedMessage2", message => {
+            MessagingCenter.Subscribe<UpdateEpisodeMessage>(this, "UpdateEpisodeMessage", message => {
                 Device.BeginInvokeOnMainThread(() =>
-                {   //receive the result from DownloadManager
+                {   //receive the result from DownloadService
                     if (EpisodeItem.Id == message.RssEpisode.Id)
                     {   //check that this ViewModel is the correct one for the downloaded podcast
                         DownloadButtonEnabled = true;
@@ -129,9 +130,9 @@ namespace Thoth.ViewModels
 
                 });
             });
-            MessagingCenter.Subscribe<DownloadFinishedMessage2>(this, "StartEpisodePlaying", message => {
+            MessagingCenter.Subscribe<UpdateEpisodeMessage>(this, "StartEpisodePlaying", message => {
                 Device.BeginInvokeOnMainThread(() =>
-                {   //receive the result from DownloadManager
+                {   //receive the result from DownloadService
                     if (EpisodeItem.Id == message.RssEpisode.Id)
                     {   //check that this ViewModel is the correct one for the downloaded podcast
                         PlayPauseState = true;
@@ -141,9 +142,9 @@ namespace Thoth.ViewModels
 
                 });
             });
-            MessagingCenter.Subscribe<DownloadFinishedMessage2>(this, "StopEpisodePlaying", message => {
+            MessagingCenter.Subscribe<UpdateEpisodeMessage>(this, "StopEpisodePlaying", message => {
                 Device.BeginInvokeOnMainThread(() =>
-                {   //receive the result from DownloadManager
+                {   //receive the result from DownloadService
                     if (EpisodeItem.Id == message.RssEpisode.Id)
                     {   //check that this ViewModel is the correct one for the downloaded podcast
                         PlayPauseState = false;
@@ -153,9 +154,9 @@ namespace Thoth.ViewModels
 
                 });
             });
-            MessagingCenter.Subscribe<DownloadFinishedMessage2>(this, "PlaybackEnded", message => {
+            MessagingCenter.Subscribe<UpdateEpisodeMessage>(this, "PlaybackEnded", message => {
                 Device.BeginInvokeOnMainThread(async () =>
-                {   //receive the result from DownloadManager
+                {   //receive the result from DownloadService
                     if (EpisodeItem.Id == message.RssEpisode.Id)
                     {   //check that this ViewModel is the correct one for the downloaded podcast
                         await RssEpisodeManager.FinishedEpisodeAsync(message.RssEpisode);
@@ -174,10 +175,10 @@ namespace Thoth.ViewModels
 
             try
             {
-                if (DownloadManager.CanDownload(EpisodeItem))
+                if (DownloadService.CanDownloadPodcast(EpisodeItem))
                 {
                     DownloadButtonEnabled = false;
-                    DownloadManager.Instance.Download(EpisodeItem); //fires message center messages
+                    DownloadService.Instance.DownloadPodcast(EpisodeItem); //fires message center messages
                 }
             }
             catch (Exception ex)
@@ -198,6 +199,11 @@ namespace Thoth.ViewModels
             try
             {
                 EpisodeItem = await RssEpisodeManager.DeletePodcastFile(EpisodeItem);
+                var finishedMessage2 = new UpdateEpisodeMessage
+                {
+                    RssEpisode = EpisodeItem
+                };
+                MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
             }
             catch (Exception ex)
             {

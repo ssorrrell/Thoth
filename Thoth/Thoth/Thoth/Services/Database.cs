@@ -1,6 +1,8 @@
 ﻿using System;
 using SQLite;
 
+using Thoth.Common;
+
 namespace Thoth.Services
 {
     public sealed class Database

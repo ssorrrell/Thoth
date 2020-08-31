@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using Thoth.Services;
+using Thoth.Helpers;
 using Xamarin.Forms;
 
 namespace Thoth.Models

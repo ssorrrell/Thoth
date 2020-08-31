@@ -3,7 +3,7 @@ using System.Globalization;
 
 using Xamarin.Forms;
 
-using Thoth.Services;
+using Thoth.Helpers;
 
 namespace Thoth.Views.ValueConverters
 {

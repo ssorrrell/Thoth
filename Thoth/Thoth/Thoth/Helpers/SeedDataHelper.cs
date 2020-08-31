@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Thoth.Models;
 
-namespace Thoth.Services
+namespace Thoth.Helpers
 {
     public class SeedDataHelper
     {

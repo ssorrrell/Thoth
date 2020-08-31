@@ -33,7 +33,7 @@ namespace Thoth.Models
         private string _link;
 
         /// <summary>
-        /// Gets the id of the feed.
+        /// Gets the imgae URI of the episode.
         /// </summary>
         public string ImageLink { get { return _imageLink; } set { _imageLink = value; } }
         private string _imageLink;
