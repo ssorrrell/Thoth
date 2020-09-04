@@ -88,9 +88,19 @@ namespace Thoth.Models
                     var episodes = RssEpisodeManager.GetRssEpisodesFromXDoc(doc, feedItem.Id.Value);
 
                     //save new episodes to database
-                    result = await DataStore.AddEpisodesToFeed(episodes); //returns the number of items deleted                                                                         
+                    result = await DataStore.AddEpisodesToFeed(episodes); //returns the number of items added                                                                         
                     if (result == 0)
                         Debug.WriteLine("FeedItemManager.RefreshFeedItem Result from AddEpisodesToFeed was 0 ");
+
+                    //check existing episodes for undownloaded images
+                    var existingEpisodes = await DataStore.GetAllEpisodeItemsByFeedIdAsync((int)feedItem.Id);
+                    foreach (var episode in existingEpisodes)
+                    {
+                        if (DownloadService.CanDownloadImage(episode)) //check if image is already downloaded
+                        {
+                            DownloadService.Instance.DownloadImage(episode); //queue to download
+                        }
+                    }
                 }
             }
             catch (Exception ex)

@@ -18,6 +18,7 @@
             <vc:IsDownloadedBoolConverter x:Key="isDownloadedBoolConverter" />
             <vc:InverseBoolConverter x:Key="inverseBoolConverter" />
             <vc:StringIsEmptyToBoolConverter x:Key="stringIsEmptyToBoolConverter" />
+            <vc:PlayerPositionConverter x:Key="playerPositionConverter" />
         </ResourceDictionary>
         <x:String x:Key="Rewind">&#xe020;</x:String>
         <x:String x:Key="Play">&#xe037;</x:String>

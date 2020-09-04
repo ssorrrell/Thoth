@@ -149,7 +149,7 @@ namespace Thoth.Services
             }
             catch (Exception ex)
             {
-                //could not delete item
+                //could not download item
                 Debug.WriteLine("DownloadService.DownloadFeed Could not Download Podcast File " + ex.Message);
             }
             return result;
@@ -188,24 +188,31 @@ namespace Thoth.Services
             if (_downloadStatus == DownloadStatus.NotStarted && _downloadQueue.Count > 0)
             {
                 _downloadStatus = DownloadStatus.IsDownloading;
-                var queueItem = _downloadQueue.Dequeue();
-                //download the file to storage
-                var startMessage = new StartLongRunningTaskMessage(); //goes to Android project Service, returns thru DownloadFinishedMessage
-                MessagingCenter.Send(startMessage, "StartLongRunningTaskMessage"); //start background downloads
-                switch (queueItem.ItemType)
+                try
                 {
-                    case QueueType.PodcastFile:
-                        var rssEpisode = (RssEpisode)queueItem.QueueDataObject;
-                        DownloadPodcastFile(rssEpisode);
-                        break;
-                    case QueueType.ImageFile:
-                        var fileEpisode = (RssEpisode)queueItem.QueueDataObject;
-                        DownloadImageFile(fileEpisode);
-                        break;
-                    case QueueType.RssFeed:
-                        var feedEpisode = (RssEpisode)queueItem.QueueDataObject;
-                        DownloadFeedFile(feedEpisode);
-                        break;
+                    var queueItem = _downloadQueue.Dequeue();
+                    //download the file to storage
+                    var startMessage = new StartLongRunningTaskMessage(); //goes to Android project Service, returns thru DownloadFinishedMessage
+                    MessagingCenter.Send(startMessage, "StartLongRunningTaskMessage"); //start background downloads
+                    switch (queueItem.ItemType)
+                    {
+                        case QueueType.PodcastFile:
+                            var rssEpisode = (RssEpisode)queueItem.QueueDataObject;
+                            DownloadPodcastFile(rssEpisode);
+                            break;
+                        case QueueType.ImageFile:
+                            var fileEpisode = (RssEpisode)queueItem.QueueDataObject;
+                            DownloadImageFile(fileEpisode);
+                            break;
+                        case QueueType.RssFeed:
+                            var feedEpisode = (RssEpisode)queueItem.QueueDataObject;
+                            DownloadFeedFile(feedEpisode);
+                            break;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine("DownloadService.StartDownload Could not Start Downloader " + ex.Message);
                 }
             }
         }
@@ -329,13 +336,10 @@ namespace Thoth.Services
             var result = false;
             try
             {
-                if (episode.Id != null)
-                {
-                    var filePath = FileHelper.GetImagePath(episode.ImageFileName);
-                    var fileExists = File.Exists(filePath);
-                    if (!fileExists)
-                        result = true;
-                }
+                var filePath = FileHelper.GetImagePath(episode.ImageFileName);
+                var fileExists = File.Exists(filePath);
+                if (!fileExists)
+                    result = true;
             }
             catch (Exception ex)
             {

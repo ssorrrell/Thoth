@@ -101,14 +101,29 @@ namespace Thoth.Services
         public double CurrentPosition
         {
             get
-            {
+            {   //asking for CurrentPosition causes CurrentPositionString to be refreshed
+                CurrentPositionString = PodcastPositionHelper.ConvertPosition((decimal)_currentPosition);
                 return _currentPosition;
             }
             set
             {
                 if (value >= 0 && value <= Duration && _player != null && _player.CanSeek)
                     _player.Seek(value);
+                CurrentPositionString = PodcastPositionHelper.ConvertPosition((decimal)value);
                 SetProperty(ref _currentPosition, value); 
+            }
+        }
+
+        string _currentPositionString = "";
+        public string CurrentPositionString
+        {
+            get
+            {
+                return _currentPositionString;
+            }
+            set
+            {
+                SetProperty(ref _currentPositionString, value);
             }
         }
 
@@ -125,7 +140,18 @@ namespace Thoth.Services
         public double Duration
         {
             get { return _duration; }
-            set { SetProperty(ref _duration, value); }
+            set
+            {
+                DurationString = PodcastPositionHelper.ConvertPosition((decimal)value);
+                SetProperty(ref _duration, value);
+            }
+        }
+        
+        string _durationString = "";
+        public string DurationString
+        {
+            get { return _durationString; }
+            set { SetProperty(ref _durationString, value); }
         }
 
         public bool CanSeek

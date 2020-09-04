@@ -327,8 +327,10 @@ namespace Thoth.ViewModels
         private bool UpdatePosition()
         {
             string title = PodcastPlayer.Instance.Episode.Title;
-            int pos = (int)PodcastPlayer.Instance.CurrentPosition;
-            PositionText = $"{title} Position: {pos} / {PodcastPlayer.Instance.Duration}";
+            int pos = (int)PodcastPlayer.Instance.CurrentPosition; //asking for CurrentPosition causes CurrentPositionString to be refreshed
+            var position = PodcastPlayer.Instance.CurrentPositionString;
+            var duration = PodcastPlayer.Instance.DurationString;
+            PositionText = $"{title} Position: {position} / {duration}";
             SliderPosition = pos;
             return PodcastPlayer.Instance.IsPlaying;
         }
