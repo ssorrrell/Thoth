@@ -65,16 +65,8 @@ namespace Thoth.Services
                     {
                         episode.PlayPauseDownloadIcon = IconFont.CircleArrowHistory;
                         //save download status to the database
-                        var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
-                        if (resultSave == 1)
-                        {
-                            var finishedMessage2 = new UpdateEpisodeMessage
-                            {
-                                RssEpisode = episode
-                            };
-                            MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
-                        }
-                        else
+                        var resultSave = await DataStore.SaveEpisodeItemAsync(episode, true); //returns the number of items changed
+                        if (resultSave != 1)
                         {
                             Debug.WriteLine("DownloadService.DownloadPodcastAsync Could not Update episode");
                         }
@@ -261,16 +253,8 @@ namespace Thoth.Services
             {
                 episode.PlayPauseDownloadIcon = IconFont.Clock;
                 //save download status to the database
-                var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
-                if (resultSave == 1)
-                {
-                    var finishedMessage2 = new UpdateEpisodeMessage
-                    {
-                        RssEpisode = episode
-                    };
-                    MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
-                }
-                else
+                var resultSave = await DataStore.SaveEpisodeItemAsync(episode, true); //returns the number of items changed
+                if (resultSave != 1)
                 {
                     Debug.WriteLine("DownloadService.DownloadPodcastFile Could not Update episode");
                 }
@@ -347,16 +331,8 @@ namespace Thoth.Services
                     episode.PlayPauseDownloadIcon = IconFont.PlayArrow;
                     RssEpisodeManager.UpdateRssEpisodeWithFileInfo(ref episode);
                     //save download status to the database
-                    var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
-                    if (resultSave == 1)
-                    {
-                        var finishedMessage2 = new UpdateEpisodeMessage
-                        {
-                            RssEpisode = episode
-                        };
-                        MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
-                    }
-                    else
+                    var resultSave = await DataStore.SaveEpisodeItemAsync(episode, true); //returns the number of items changed
+                    if (resultSave != 1)
                     {
                         Debug.WriteLine("DownloadService.PodcastFileCompletedAsync Could not Update episode");
                     }

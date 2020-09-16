@@ -16,7 +16,7 @@ namespace Thoth.Services
         Task<List<RssEpisode>> GetAllEpisodeItemsByFeedIdAsync(int id);
         Task<RssEpisode> GetEpisodeItemByIdAsync(int episodeId);
         Task<int> GetMaxRssEpisodeId();
-        Task<int> SaveEpisodeItemAsync(RssEpisode item);
+        Task<int> SaveEpisodeItemAsync(RssEpisode item, bool doPublish = false);
         Task<int> SaveEpisodeListAsync(List<RssEpisode> itemList);
         Task<int> AddEpisodesToFeed(List<RssEpisode> itemList);
         Task<int> DeleteEpisodeItemByIdAsync(int? id);

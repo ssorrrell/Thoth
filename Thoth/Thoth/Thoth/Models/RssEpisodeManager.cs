@@ -96,7 +96,7 @@ namespace Thoth.Models
         }
 
         //******************************** Regular Functions **************************************
-        public async Task<RssEpisode> DeletePodcastFile(RssEpisode episode)
+        public async Task<RssEpisode> DeletePodcastFile(RssEpisode episode, bool doPublish = false)
         {   //Takes in and episode, modifies it, saves it, and returns the episode
             var returnEpisode = episode;
             try
@@ -114,7 +114,7 @@ namespace Thoth.Models
                         episode.Duration = 0;
                         episode.CurrentPosition = 0;
                         //save download status to the database
-                        var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
+                        var resultSave = await DataStore.SaveEpisodeItemAsync(episode, doPublish); //returns the number of items changed
                         if (resultSave == 0 )
                         {
                             Debug.WriteLine("RssEpisodeManager.DeletePodcastFile Could not Update episode");

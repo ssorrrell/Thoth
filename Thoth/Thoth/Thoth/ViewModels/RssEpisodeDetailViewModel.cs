@@ -198,12 +198,7 @@ namespace Thoth.ViewModels
 
             try
             {
-                EpisodeItem = await RssEpisodeManager.DeletePodcastFile(EpisodeItem);
-                var finishedMessage2 = new UpdateEpisodeMessage
-                {
-                    RssEpisode = EpisodeItem
-                };
-                MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
+                EpisodeItem = await RssEpisodeManager.DeletePodcastFile(EpisodeItem, true);
             }
             catch (Exception ex)
             {

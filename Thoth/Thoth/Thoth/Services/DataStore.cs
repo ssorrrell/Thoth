@@ -8,6 +8,8 @@ using SQLite;
 using Thoth.Models;
 using Thoth.Helpers;
 using Thoth.Common;
+using Thoth.Messages;
+using Xamarin.Forms;
 
 namespace Thoth.Services
 {
@@ -121,25 +123,34 @@ namespace Thoth.Services
             return await Database.ExecuteScalarAsync<int>("SELECT Max(Id) FROM [RssEpisode]").ConfigureAwait(false);
         }
 
-        public async Task<int> SaveEpisodeItemAsync(RssEpisode item)
+        public async Task<int> SaveEpisodeItemAsync(RssEpisode item, bool doPublish = false)
         {
             if (episodes == null)
                 episodes = new List<RssEpisode>();
-
+            var result = 0;
             if (item.Id != null && item.Id != 0)
             {
                 var oldItem = episodes.Where((RssEpisode arg) => arg.Id == item.Id).FirstOrDefault();
                 episodes.Remove(oldItem);
                 episodes.Add(item);
-                return await Database.UpdateAsync(item);
+                result = await Database.UpdateAsync(item);
             }
             else
             {
                 var maxId = await GetMaxRssEpisodeId();
                 item.Id = maxId + 1;
                 episodes.Add(item);
-                return await Database.InsertAsync(item);
+                result = await Database.InsertAsync(item);
             }
+            if (result > 0 && doPublish)
+            {
+                var updateEpisodeMessage = new UpdateEpisodeMessage
+                {
+                    RssEpisode = item
+                };
+                MessagingCenter.Send(updateEpisodeMessage, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
+            }
+            return result;
         }
 
         public async Task<int> SaveEpisodeListAsync(List<RssEpisode> itemList)
@@ -186,8 +197,6 @@ namespace Thoth.Services
                 throw new Exception("Can not find RssEpisode " + id);
             feedEpisodes.Remove(oldItem);
             return await Database.DeleteAsync<RssEpisode>(id);
-            //return await Database.DeleteAsync(item);
-            //return await Database.DeleteAllAsync<FeedItem>();
         }
 
         public async Task<int> DeleteAllEpisodesByFeedIdAsync(int? feedId)
