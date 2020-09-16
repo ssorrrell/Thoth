@@ -62,7 +62,7 @@ namespace Thoth.ViewModels
                                 if (lastImageLink != episode.ImageLink)
                                 {   //don't try to download when the image is the same from episode to episode
                                     lastImageLink = episode.ImageLink;
-                                    DownloadService.Instance.DownloadImage(episode);
+                                    await DownloadService.Instance.DownloadImageAsync(episode);
                                 }
                                 count++;
                                 //if (count > 20) break; //only get 20, not like 1000

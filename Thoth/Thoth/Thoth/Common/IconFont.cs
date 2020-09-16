@@ -19,5 +19,9 @@ namespace Thoth.Common
 		public const string Delete = "\ue872";
 		public const string Home = "\ue88a";
 		public const string Checked = "\ue5ca";
+		public const string CircleArrowHistory = "\ue889";
+		public const string Clock = "\ue8ae";
+		public const string CircleArrowDot = "\ue8ba";
+		public const string CircleArrowDash = "\ue419";
 	}
 }

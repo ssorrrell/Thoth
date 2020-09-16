@@ -10,6 +10,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Toolkit.Parsers.Markdown.Blocks;
 
 namespace Thoth.Services
 {
@@ -51,22 +53,45 @@ namespace Thoth.Services
         }
 
         //************************************** Download Functions ******************************************
-        public bool DownloadPodcast(RssEpisode episode)
+        public async Task<bool> DownloadPodcast(RssEpisode episode)
         {   //no need to be async, check some things then fire MessageCenter to background task
             var result = false;
             try
             {
                 if (CanDownloadPodcast(episode))
                 {
-                    //queue download
-                    var queueItem = new QueueItem();
-                    queueItem.ID = _downloadQueue.Count;
-                    queueItem.ItemType = QueueType.PodcastFile;
-                    queueItem.QueueDataObject = episode;
-                    _downloadQueue.Enqueue(queueItem);
-                    //start downloader
-                    StartDownload();                        
-                    result = true;
+                    var foundItem = FetchQueueItem(episode, QueueType.PodcastFile);
+                    if (foundItem == null)
+                    {
+                        episode.PlayPauseDownloadIcon = IconFont.CircleArrowHistory;
+                        //save download status to the database
+                        var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
+                        if (resultSave == 1)
+                        {
+                            var finishedMessage2 = new UpdateEpisodeMessage
+                            {
+                                RssEpisode = episode
+                            };
+                            MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
+                        }
+                        else
+                        {
+                            Debug.WriteLine("DownloadService.DownloadPodcastAsync Could not Update episode");
+                        }
+                        //queue download
+                        var queueItem = new QueueItem();
+                        queueItem.ID = _downloadQueue.Count;
+                        queueItem.ItemType = QueueType.PodcastFile;
+                        queueItem.QueueDataObject = episode;
+                        _downloadQueue.Enqueue(queueItem);
+                        //start downloader
+                        await StartDownloadAsync();
+                        result = true;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("DownloadService.DownloadPodcast episode was found in the _downloadQueue already");
+                    }
                 }
                 else
                 {
@@ -81,7 +106,7 @@ namespace Thoth.Services
             return result;
         }
 
-        public bool DownloadImage(RssEpisode episode)
+        public async Task<bool> DownloadImageAsync(RssEpisode episode)
         {   //no need to be async, check some things then fire MessageCenter to background task
             var result = false;
             try
@@ -97,7 +122,7 @@ namespace Thoth.Services
                         queueItem.QueueDataObject = episode;
                         _downloadQueue.Enqueue(queueItem);
                         //start downloader
-                        StartDownload();
+                        await StartDownloadAsync();
                         result = true;
                     }
                     else
@@ -118,7 +143,7 @@ namespace Thoth.Services
             return result;
         }
 
-        public bool DownloadFeed(RssEpisode episode)
+        public async Task<bool> DownloadFeed(RssEpisode episode)
         {   //no need to be async, check some things then fire MessageCenter to background task
             var result = false;
             try
@@ -134,7 +159,7 @@ namespace Thoth.Services
                         queueItem.QueueDataObject = episode;
                         _downloadQueue.Enqueue(queueItem);
                         //start downloader
-                        StartDownload();
+                        await StartDownloadAsync();
                         result = true;
                     }
                     else
@@ -153,6 +178,19 @@ namespace Thoth.Services
                 Debug.WriteLine("DownloadService.DownloadFeed Could not Download Podcast File " + ex.Message);
             }
             return result;
+        }
+
+        private QueueItem FetchQueueItem(RssEpisode episode, QueueType queueType)
+        {
+            //var foundItem = _downloadQueue.Select(x => (x.QueueDataObject == episode) && (x.ItemType == queueType)).First();
+            QueueItem foundItem = null;
+            if (_downloadQueue.Count > 0)
+            {
+                var foundItems = _downloadQueue.Where(x => (((RssEpisode)x.QueueDataObject).Id == episode.Id) && (x.ItemType == queueType)).ToList();
+                if (foundItems.Count() > 0)
+                    foundItem = foundItems[0];
+            }
+            return foundItem;
         }
 
         private async Task DownloadFinishedAsync(DownloadFinishedMessage message)
@@ -183,7 +221,7 @@ namespace Thoth.Services
             }
         }
 
-        private void StartDownload()
+        private async Task StartDownloadAsync()
         {
             if (_downloadStatus == DownloadStatus.NotStarted && _downloadQueue.Count > 0)
             {
@@ -198,7 +236,7 @@ namespace Thoth.Services
                     {
                         case QueueType.PodcastFile:
                             var rssEpisode = (RssEpisode)queueItem.QueueDataObject;
-                            DownloadPodcastFile(rssEpisode);
+                            await DownloadPodcastFileAsync(rssEpisode);
                             break;
                         case QueueType.ImageFile:
                             var fileEpisode = (RssEpisode)queueItem.QueueDataObject;
@@ -217,59 +255,11 @@ namespace Thoth.Services
             }
         }
 
-        private void DownloadPodcastFile(RssEpisode episode)
+        private async Task DownloadPodcastFileAsync(RssEpisode episode)
         {
-            //download the file to storage
-            var filePath = FileHelper.GetPodcastPath(episode.PodcastFileName);
-            var message = new DownloadMessage
+            try
             {
-                Id = episode.Id.Value, //needed to update RssEpisode when done
-                Url = episode.EnclosureLink,
-                FilePath = filePath,
-                QueueType = QueueType.PodcastFile
-            };
-            MessagingCenter.Send(message, "Download"); //goes to Android project Service, returns thru DownloadFinishedMessage
-        }
-
-        private void DownloadImageFile(RssEpisode episode)
-        {
-            //download the file to storage
-            var filePath = FileHelper.GetImagePath(episode.ImageLink);
-            var message = new DownloadMessage
-            {
-                Id = episode.Id.Value, //needed to update RssEpisode when done
-                Url = episode.ImageLink,
-                FilePath = filePath,
-                QueueType = QueueType.ImageFile
-            };
-            MessagingCenter.Send(message, "Download"); //goes to Android project Service, returns thru DownloadFinishedMessage
-        }
-
-        //this is not setup correctly yet
-        private void DownloadFeedFile(RssEpisode episode)
-        {
-            //download the file to storage
-            var filePath = FileHelper.GetImagePath(episode.ImageLink);
-            var message = new DownloadMessage
-            {
-                Id = episode.Id.Value, //needed to update RssEpisode when done
-                Url = episode.ImageLink,
-                FilePath = filePath,
-                QueueType = QueueType.RssFeed
-            };
-            MessagingCenter.Send(message, "Download"); //goes to Android project Service, returns thru DownloadFinishedMessage
-        }
-
-        private async Task PodcastFileCompletedAsync(DownloadFinishedMessage message)
-        {
-            //refetch rssEpisode in case it's different from the currently viewed one
-            var episode = await DataStore.GetEpisodeItemByIdAsync(message.Id);
-            if (episode != null)
-            {
-                episode.IsPlaying = IsPlayingEnum.NotStarted;
-                episode.IsDownloaded = IsDownloadedEnum.Downloaded;
-                episode.PlayPauseDownloadIcon = IconFont.PlayArrow;
-                RssEpisodeManager.UpdateRssEpisodeWithFileInfo(ref episode);
+                episode.PlayPauseDownloadIcon = IconFont.Clock;
                 //save download status to the database
                 var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
                 if (resultSave == 1)
@@ -282,29 +272,134 @@ namespace Thoth.Services
                 }
                 else
                 {
-                    Debug.WriteLine("DownloadService.DownloadFinishedAsync Could not Update episode");
+                    Debug.WriteLine("DownloadService.DownloadPodcastFile Could not Update episode");
                 }
+                //download the file to storage
+                var filePath = FileHelper.GetPodcastPath(episode.PodcastFileName);
+                var message = new DownloadMessage
+                {
+                    Id = episode.Id.Value, //needed to update RssEpisode when done
+                    Url = episode.EnclosureLink,
+                    FilePath = filePath,
+                    QueueType = QueueType.PodcastFile
+                };
+                MessagingCenter.Send(message, "Download"); //goes to Android project Service, returns thru DownloadFinishedMessage
             }
-            else
+            catch (Exception ex)
             {
-                Debug.WriteLine("DownloadService.DownloadFinishedAsync episode was null from GetEpisodeItemByIdAsync");
+                Debug.WriteLine("DownloadService.DownloadPodcastFile Error " + ex.Message);
             }
-            _downloadStatus = DownloadStatus.NotStarted;
-            StartDownload(); //start next download
+        }
+
+        private void DownloadImageFile(RssEpisode episode)
+        {
+            try
+            {
+                //download the file to storage
+                var filePath = FileHelper.GetImagePath(episode.ImageLink);
+                var message = new DownloadMessage
+                {
+                    Id = episode.Id.Value, //needed to update RssEpisode when done
+                    Url = episode.ImageLink,
+                    FilePath = filePath,
+                    QueueType = QueueType.ImageFile
+                };
+                MessagingCenter.Send(message, "Download"); //goes to Android project Service, returns thru DownloadFinishedMessage
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DownloadService.DownloadImageFile Error " + ex.Message);
+            }
+        }
+
+        //this is not setup correctly yet
+        private void DownloadFeedFile(RssEpisode episode)
+        {
+            try
+            {
+                //download the file to storage
+                var filePath = FileHelper.GetImagePath(episode.ImageLink);
+                var message = new DownloadMessage
+                {
+                    Id = episode.Id.Value, //needed to update RssEpisode when done
+                    Url = episode.ImageLink,
+                    FilePath = filePath,
+                    QueueType = QueueType.RssFeed
+                };
+                MessagingCenter.Send(message, "Download"); //goes to Android project Service, returns thru DownloadFinishedMessage
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DownloadService.DownloadFeedFile Error " + ex.Message);
+            }
+        }
+
+        private async Task PodcastFileCompletedAsync(DownloadFinishedMessage message)
+        {
+            try
+            { 
+                //refetch rssEpisode in case it's different from the currently viewed one
+                var episode = await DataStore.GetEpisodeItemByIdAsync(message.Id);
+                if (episode != null)
+                {
+                    episode.IsPlaying = IsPlayingEnum.NotStarted;
+                    episode.IsDownloaded = IsDownloadedEnum.Downloaded;
+                    episode.PlayPauseDownloadIcon = IconFont.PlayArrow;
+                    RssEpisodeManager.UpdateRssEpisodeWithFileInfo(ref episode);
+                    //save download status to the database
+                    var resultSave = await DataStore.SaveEpisodeItemAsync(episode); //returns the number of items changed
+                    if (resultSave == 1)
+                    {
+                        var finishedMessage2 = new UpdateEpisodeMessage
+                        {
+                            RssEpisode = episode
+                        };
+                        MessagingCenter.Send(finishedMessage2, "UpdateEpisodeMessage"); //goes to listening ViewModels that can download
+                    }
+                    else
+                    {
+                        Debug.WriteLine("DownloadService.PodcastFileCompletedAsync Could not Update episode");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("DownloadService.PodcastFileCompletedAsync episode was null from GetEpisodeItemByIdAsync");
+                }
+                _downloadStatus = DownloadStatus.NotStarted;
+                await StartDownloadAsync(); //start next download
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DownloadService.PodcastFileCompletedAsync Error " + ex.Message);
+            }
         }
 
         private async Task ImageFileCompletedAsync(DownloadFinishedMessage message)
         {
-            //nothing in particular to do
-            _downloadStatus = DownloadStatus.NotStarted;
-            StartDownload(); //start next download
+            try
+            {
+                //nothing in particular to do
+                _downloadStatus = DownloadStatus.NotStarted;
+                await StartDownloadAsync(); //start next download
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DownloadService.ImageFileCompletedAsync Error " + ex.Message);
+            }
         }
 
         private async Task RssFeedFileCompletedAsync(DownloadFinishedMessage message)
         {
-            //nothing in particular to do
-            _downloadStatus = DownloadStatus.NotStarted;
-            StartDownload(); //start next download
+            try
+            {
+                //nothing in particular to do
+                _downloadStatus = DownloadStatus.NotStarted;
+                await StartDownloadAsync(); //start next download
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("DownloadService.RssFeedFileCompletedAsync Error " + ex.Message);
+            }
         }
 
         //************************************** Static Utility Functions ********************************************

@@ -98,7 +98,7 @@ namespace Thoth.Models
                     {
                         if (DownloadService.CanDownloadImage(episode)) //check if image is already downloaded
                         {
-                            DownloadService.Instance.DownloadImage(episode); //queue to download
+                            await DownloadService.Instance.DownloadImageAsync(episode); //queue to download
                         }
                     }
                 }

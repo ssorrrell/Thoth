@@ -92,11 +92,16 @@ namespace Thoth.Views
         }
 
         async void OnItemSelected(object sender, EventArgs args)
-        {
+        {   //tap item in list
             var layout = (BindableObject)sender;
             var item = (RssEpisode)layout.BindingContext;
 
             await Navigation.PushAsync(new RssEpisodeDetailPage(new RssEpisodeDetailViewModel(ViewModel.FeedItem, item)));
+        }
+
+        async void OnCollectionViewRemainingItemsThresholdReachedAsync(object sender, EventArgs args)
+        {   //list scrolled below loaded records
+            await ViewModel.ExecuteLoadNextItemsCommand();
         }
 
         protected override void OnAppearing()

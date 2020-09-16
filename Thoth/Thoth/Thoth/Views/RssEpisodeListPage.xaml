@@ -42,16 +42,16 @@
             <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
                 <StackLayout>
                     <StackLayout Orientation="Vertical" BackgroundColor="LightSkyBlue" IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
-                        <StackLayout Orientation="Horizontal" Padding="6,0,0,0">
+                        <StackLayout Orientation="Horizontal" Padding="6,0,0,0" IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
                             <Label Text="Last Check" FontSize="Medium"></Label>
                             <Label Text="{Binding FeedItem.LastCheck, StringFormat='{0:MMMM dd, yyyy} {0:hh\\:mm}'}" FontSize="Medium"></Label>
                         </StackLayout>
-                        <StackLayout Orientation="Horizontal" Padding="6,0,0,0">
-                            <Label Text="{Binding Items.Count}" FontSize="Medium"></Label>
+                        <StackLayout Orientation="Horizontal" Padding="6,0,0,0" IsVisible="{Binding IsBusy, Converter={StaticResource inverseBoolConverter}}">
+                            <Label Text="{Binding ItemCount}" FontSize="Medium"></Label>
                             <Label Text="Episodes" FontSize="Medium"></Label>
                         </StackLayout>
                     </StackLayout>
-                    <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding Items}">
+                    <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding Items}" RemainingItemsThreshold="{Binding ListItemSize}" RemainingItemsThresholdReached="OnCollectionViewRemainingItemsThresholdReachedAsync">
                         <d:CollectionView.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                             </x:Array>
