@@ -6,7 +6,7 @@ Thoth is a project I used to learn Xamarin Forms.  It's a simple project that co
 
 ### Screenshots
 
-<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%203%2021072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%202%2021072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2021072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" width="100px" />
+<IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%203%2016092020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%202%2016092020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%201%2016092020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%204%2008072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%205%2021072020.png" width="100px" /><IMG src="https://github.com/ssorrrell/Thoth/blob/master/Thoth%206%2021072020.png" width="100px" />
 
 ### Features
  
@@ -49,5 +49,7 @@ The Android side is developed against a Pixel 2 Pie and Nokia 5x Pie emulator.
 The design pattern for the UI is MVVM.  The code behinds are kept minimal, mostly to event binding and passing through to the ViewModels.  There's a single DataStore class for all objects.  Services are provided for the audio player and downloader.  A Entity Managers are used for actions around specific model classes.  For example, the FeedItemManager refreshes feeds and deletes feeds.
  
 Downloads are done in Android specific project on a background thread.  Using the UI thread did not complete a podcast download successfully.
+
+ViewModels are notified of Entity changes through MessagingCenter.  They subscribe to the message and check that the entity in it matches one in the current ViewModel and then update with the new Entity.  The RssEpisode entity sends and updates on DataStore save of this entity, which seems kind of odd.  Not sure if this is right or not.
  
  
